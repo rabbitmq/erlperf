@@ -579,7 +579,9 @@ perform_squeeze(Jobs, CRef, Current, History, QMax, Options, ConOpts) ->
             report_squeeze(QMax, NewHistory, Options);
         NewQMax ->
             % need more workers
-            perform_squeeze(Jobs, CRef, Current + 1, NewHistory, NewQMax, Options, ConOpts)
+            MultipleOf = maps:get(multiple_of, ConOpts, 1),
+            NextStep = (Current + MultipleOf) div MultipleOf * MultipleOf,
+            perform_squeeze(Jobs, CRef, NextStep, NewHistory, NewQMax, Options, ConOpts)
     end.
 
 report_squeeze(QMax, History, Options) ->
