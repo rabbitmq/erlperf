@@ -76,7 +76,8 @@
     threshold => pos_integer(),
     %% Minimum and maximum number of workers to try
     min => pos_integer(),
-    max => pos_integer()
+    max => pos_integer(),
+    multiple_of => pos_integer()
 }.
 
 %% Single run result: one or multiple samples (depending on report verbosity)
@@ -192,7 +193,7 @@ main(Args) ->
         {_, Code} = lists:foldl(fun callable/2, {RunOpts, Code0}, [init, init_runner, done]),
         COpts = case maps:find(squeeze, RunOpts) of
                     {ok, true} ->
-                        maps:with([min, max, threshold], RunOpts);
+                        maps:with([min, max, threshold, multiple_of], RunOpts);
                     error ->
                         #{}
                 end,
